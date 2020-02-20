@@ -1,98 +1,22 @@
+import itertools
 import sys
 
-
-def first_initial(first_letter, last_name):
+def name_with_symbol(name_list):
     results = []
 
-    # First letter lowercase
-    results.append(first_letter + last_name.lower())
-    results.append(first_letter + last_name.capitalize())
-    results.append(first_letter + last_name.upper())
+    for name in name_list:
+        results.append(name + '.')
+        results.append(name + '_')
+        results.append(name + '-')
+        results.append(name + '+')
+        results.append(name + 'x')
 
-    # First letter uppercase
-    results.append(first_letter.upper() + last_name.lower())
-    results.append(first_letter.upper() + last_name.capitalize())
-    results.append(first_letter.upper() + last_name.upper())
-
-    tmp = []
-
-    for result in results:
-        tmp.append(result[0] + '.' + result[1:len(result)])
-        tmp.append(result[0] + '-' + result[1:len(result)])
-        tmp.append(result[0] + '_' + result[1:len(result)])
-
-    results.extend(tmp)
     return results
 
 
-def last_initial(first_name, last_letter):
-    results = []
-
-    # Last letter lowercase
-    results.append(first_name.lower() + last_letter)
-    results.append(first_name.capitalize() + last_letter)
-    results.append(first_name.upper() + last_letter)
-
-    # Last letter uppercase
-    results.append(first_name.lower() + last_letter.upper())
-    results.append(first_name.capitalize() + last_letter.upper())
-    results.append(first_name.upper() + last_letter.upper())
-
-    tmp = []
-
-    for result in results:
-        tmp.append(result[0:-1] + '.' + result[len(result) - 1])
-        tmp.append(result[0:-1] + '-' + result[len(result) - 1])
-        tmp.append(result[0:-1] + '_' + result[len(result) - 1])
-
-    results.extend(tmp)
-    return results
-
-
-def full_names(first_name, last_name):
-    results = []
-
-    results.append(first_name.lower() + last_name.lower())
-    results.append(first_name.capitalize() + last_name.capitalize())
-    results.append(first_name.upper() + last_name.upper())
-
-    results.append(first_name.lower() + last_name.capitalize())
-    results.append(first_name.upper() + last_name.capitalize())
-
-    results.append(first_name.capitalize() + last_name.lower())
-    results.append(first_name.capitalize() + last_name.upper())
-
-    tmp = []
-
-    for result in results:
-        tmp.append(result[0:len(first_name)] + '.' + result[len(first_name):len(result)])
-        tmp.append(result[0:len(first_name)] + '-' + result[len(first_name):len(result)])
-        tmp.append(result[0:len(first_name)] + '_' + result[len(first_name):len(result)])
-
-    results.extend(tmp)
-
-    results.append(last_name.lower() + first_name.lower())
-    results.append(last_name.capitalize() + first_name.capitalize())
-    results.append(last_name.upper() + first_name.upper())
-
-    results.append(last_name.lower() + first_name.capitalize())
-    results.append(last_name.upper() + first_name.capitalize())
-
-    results.append(last_name.capitalize() + first_name.lower())
-    results.append(last_name.capitalize() + first_name.upper())
-
-    tmp = []
-
-    for result in results:
-        if not result.isalpha():
-            continue
-        tmp.append(result[0:len(last_name)] + '.' + result[len(last_name):len(result)])
-        tmp.append(result[0:len(last_name)] + '-' + result[len(last_name):len(result)])
-        tmp.append(result[0:len(last_name)] + '_' + result[len(last_name):len(result)])
-
-    results.extend(tmp)
-
-    return results
+def combine(left, right):
+    left.extend(name_with_symbol(left))
+    return map(''.join, itertools.product(left, right))
 
 
 def main():
@@ -100,18 +24,25 @@ def main():
     variations = []
 
     for name in names:
-        splitname = name.split(' ')
-        first_name = splitname[0]
-        last_name = splitname[1]
+        split_name = name.split(' ')
+        if len(split_name) != 2:
+            print('Invalid name provided, must match "FirstName LastName" format')
+            continue
 
-        variations.extend(first_initial(first_name[0].lower(), last_name))
-        variations.extend(last_initial(first_name, last_name[0].lower()))
-        variations.extend(full_names(first_name, last_name))
+        first_name = split_name[0]
+        last_name = split_name[1]
+
+        first_name_vars = [first_name.lower(), first_name.capitalize(), first_name.upper()]
+        last_name_vars = [last_name.lower(), last_name.capitalize(), last_name.upper()]
+
+        variations.extend(combine(first_name_vars[:] + [first_name[0].lower(), first_name[0].upper()], last_name_vars[:]))
+        variations.extend(combine(last_name_vars[:] + [last_name[0].lower(), last_name[0].upper()], first_name_vars[:]))
 
     with open('users.txt', 'w') as user_file:
         for variation in variations:
             user_file.write(variation + '\n')
-    print("Number of variations: " + str(len(variations)))
+
+    print(str(len(names)) + ' user(s), ' + str(len(variations)) + ' variations')
 
 
 if __name__ == '__main__':
