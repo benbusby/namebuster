@@ -9,7 +9,6 @@ def name_with_symbol(name_list):
         results.append(name + '_')
         results.append(name + '-')
         results.append(name + '+')
-        results.append(name + 'x')
 
     return results
 
@@ -37,6 +36,11 @@ def main():
 
         variations.extend(combine(first_name_vars[:] + [first_name[0].lower(), first_name[0].upper()], last_name_vars[:]))
         variations.extend(combine(last_name_vars[:] + [last_name[0].lower(), last_name[0].upper()], first_name_vars[:]))
+        variations.extend(combine(first_name_vars[:], [last_name[0].lower(), last_name[0].upper()]))
+        variations.extend(combine(last_name_vars[:], [first_name[0].lower(), first_name[0].upper()]))
+
+        variations.extend(first_name_vars)
+        variations.extend(last_name_vars)
 
     with open('users.txt', 'w') as user_file:
         for variation in variations:
