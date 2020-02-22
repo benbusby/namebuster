@@ -1,5 +1,5 @@
-# name-ripper
-Generates a list of username permutations from a list of names
+# namebuster
+Generates a file of username permutations from a list of names
 
 ## Usage
 
@@ -7,7 +7,7 @@ Generates a list of username permutations from a list of names
 python name-ripper.py "John Broccoli, Adam Blueberry, Queen Mango"
 ```
 
-The script will create a file named 'users.txt' containing a long list of possible username variations for each name. You can use this list with a tool like kerbrute, for example:
+The script will create a file named 'users.txt' containing a long list of possible username variations for each name (approx. 130 per name). You can use this list with a tool like kerbrute, for example:
 
 ```bash
 python name-ripper.py "Fergus Smith"
