@@ -4,6 +4,21 @@ import subprocess
 import sys
 
 separator = '==============================================\n'
+usage = '''
+Usage:
+namebuster <names|url|file>\n
+Example (names): namebuster "John Broccoli, Diana Mango"
+Example (url):   namebuster https://sauna.htb
+Example (file):  namebuster document.txt
+'''
+banner = '''
+  _   _    _    __  __ _____ ____  _   _    ____      _____     _____ ____
+ | \ | |  / \  |  \/  | ____| __ )| | | |  / ___|   _|_   _|   | ____|  _ \\
+ |  \| | / _ \ | |\/| |  _| |  _ \| | | |  \___ \ _| |_| |_____|  _| | |_) |
+ | |\  |/ ___ \| |  | | |___| |_) | |_| |   ___) |_   _| |_____| |___|  _ <
+ |_| \_/_/   \_\_|  |_|_____|____(_)___/___|____/  |_| |_|     |_____|_| \_\\
+                                      |_____|
+'''
 
 
 def signal_handler(sig, frame):
@@ -28,7 +43,7 @@ def combine(left, right):
     return map(''.join, itertools.product(left, right))
 
 
-def generate(names):
+def generate(names, cli=False, name_sep=False):
     results = {}
     total_variations = []
 
@@ -61,9 +76,14 @@ def generate(names):
     # Show prompt for what to do with the names if not being piped to file
     if sys.stdout.isatty():
         cli_prompt(results, total_variations)
-    else:
+    elif cli:
         for variation in total_variations:
             print(variation)
+    else:
+        if name_sep:
+            return results
+        else:
+            return total_variations
 
 
 def cli_prompt(results, variations):
@@ -93,6 +113,11 @@ def cli_prompt(results, variations):
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, signal_handler)
 
+    if len(sys.argv) <= 1:
+        print(usage)
+        sys.exit(1)
+
     # TODO: Add separate args for parsing name list vs file vs url
+    print(banner)
     names = [name.strip() for name in sys.argv[1].split(',')]
-    generate(names)
+    generate(names, cli=True)

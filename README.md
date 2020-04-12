@@ -1,20 +1,33 @@
 # namebuster
-Generates a file of username permutations from a list of names
+Generates a list of possible common username permutations given a list of names, a url, or a file.
+
+## Install
+`pip install namebuster`
 
 ## Usage
+### Command Line
+- Name list: `namebuster "John Broccoli, Adam Blueberry, Queen Mango"`
+- URL: `namebuster https://sauna.htb`
+- File: `namebuster document.txt`
 
-```bash
-python name-ripper.py "John Broccoli, Adam Blueberry, Queen Mango"
+### Python
+```python
+import namebuster
+
+# Create a list of all usernames as one large list
+split_usernames = namebuster.generate("https://sauna.htb")
+
+# With name_sep=True, create a dict with "real_name: [usernames]" mapping
+split_usernames = namebuster.generate("John Broccoli, Tim Apple", name_sep=True)
 ```
 
-The script will create a file named 'users.txt' containing a long list of possible username variations for each name (approx. 130 per name). You can use this list with a tool like kerbrute, for example:
+For each discovered name, namebuster will generate ~130 possible usernames. You can then use this list with a tool like kerbrute, for example:
 
 ```bash
-python name-ripper.py "Fergus Smith"
-
-...
-
-./kerbrute_linux_amd64 userenum ./users.txt -d DOMAIN.LOCAL --dc domain.com
+[ benbusby : ~/test ]
+$ namebuster "Fergus Smith" > usernames.txt
+[ benbusby : ~/test ]
+$ ./kerbrute_linux_amd64 userenum ./usernames.txt -d DOMAIN.LOCAL --dc domain.com
 
     __             __               __
    / /_____  _____/ /_  _______  __/ /____
