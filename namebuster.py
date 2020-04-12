@@ -1,4 +1,6 @@
 import itertools
+import os.path
+import re
 import signal
 import subprocess
 import sys
@@ -43,9 +45,24 @@ def combine(left, right):
     return map(''.join, itertools.product(left, right))
 
 
-def generate(names, cli=False, name_sep=False):
+def generate(source, cli=False, name_sep=False):
     results = {}
     total_variations = []
+
+    # Determine type of source to generate usernames from
+    names = []
+    urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', source)
+    if urls or os.path.exists(source):
+        # User provided a url or file, will require nlp parser
+        import utils.nlp_parser as nlp_parser
+
+        if urls:
+            names = nlp_parser.parse_web_content(urls[0])
+        else:
+            names = nlp_parser.parse_file_content(source)
+    else:
+        # User provided a comma separated string, split into list
+        names = [name.strip() for name in source.split(',')]
 
     for name in names:
         name_variations = []
@@ -88,6 +105,11 @@ def generate(names, cli=False, name_sep=False):
 
 def cli_prompt(results, variations):
     print(str(len(results)) + ' user(s), ' + str(len(variations)) + ' variations\n')
+
+    if len(results) == 0:
+        print('No results found, exiting...')
+        sys.exit(0)
+
     print('Pick a user to view their username permutations, or write to a file:\n')
     prompt = ''
     i = 0
@@ -117,7 +139,5 @@ if __name__ == '__main__':
         print(usage)
         sys.exit(1)
 
-    # TODO: Add separate args for parsing name list vs file vs url
     print(banner)
-    names = [name.strip() for name in sys.argv[1].split(',')]
-    generate(names, cli=True)
+    generate(sys.argv[1], cli=True)
