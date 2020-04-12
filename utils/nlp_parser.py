@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-import request
+import utils.request as request
 import spacy
 
 
@@ -28,9 +28,13 @@ def parse_web_content(url):
     get_body = request.fetch(url)
 
     soup = BeautifulSoup(get_body, 'html.parser')
-    for tag in soup.findAll():
-        print('TODO')
+    for text in soup.find_all(text=True):
+        if not text.strip() or not ''.join(text.split()).isalpha():
+            continue
 
+        content += text + ' '
+
+    return find_names(content)
 
 
 def parse_file_content(filepath):
