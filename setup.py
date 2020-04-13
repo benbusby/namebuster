@@ -6,8 +6,9 @@ requirements = list(open('requirements.txt', 'r'))
 
 setuptools.setup(
     name='namebuster',
-    version='1.0.1',
-    scripts=['namebuster'] ,
+    version='1.0.2',
+    scripts=['namebuster'],
+    py_modules=['namebuster'],
     author='Ben Busby',
     author_email='contact@benbusby.com',
     install_requires=requirements,

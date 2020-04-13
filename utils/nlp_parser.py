@@ -24,7 +24,7 @@ def find_names(content):
             prev_word = token.text
             continue
         else:
-            names.append(token.text + ' ' + prev_word)
+            names.append(prev_word + ' ' + token.text)
             prev_word = ''
 
     return names
