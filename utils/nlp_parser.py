@@ -5,7 +5,14 @@ import spacy
 
 def find_names(content):
     names = []
-    nl = spacy.load('en_core_web_sm')
+
+    try:
+        nl = spacy.load('en_core_web_sm')
+    except IOError:
+        print('Unable to find pretrained models, downloading now...')
+        spacy.cli.download('en_core_web_sm')
+        nl = spacy.load('en_core_web_sm')
+
     doc = nl(content)
     prev_word = ''
     for token in doc:
@@ -24,6 +31,7 @@ def find_names(content):
 
 
 def parse_web_content(url):
+    print('Parsing web content...')
     content = ''
     get_body = request.fetch(url)
 
@@ -38,5 +46,6 @@ def parse_web_content(url):
 
 
 def parse_file_content(filepath):
+    print('Parsing file content...')
     return find_names(open(filepath, 'r').read())
 
