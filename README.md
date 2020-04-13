@@ -21,7 +21,7 @@ split_usernames = namebuster.generate("https://sauna.htb")
 split_usernames = namebuster.generate("John Broccoli, Tim Apple", name_sep=True)
 ```
 
-For each discovered name, namebuster will generate ~200 possible usernames. You can then use this list with a tool like kerbrute, for example:
+For each discovered name, namebuster will generate ~200 possible usernames. You can then use this list with a tool like [kerbrute](https://github.com/ropnop/kerbrute), for example:
 
 ```bash
 [ benbusby : ~/test ]
