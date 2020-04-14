@@ -1,0 +1,8 @@
+sudo: false
+language: python
+python: 3.6
+install:
+  - pip install requirements.txt
+script:
+  - python -m unittest discover -b
+
