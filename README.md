@@ -1,4 +1,8 @@
 # namebuster
+
+[![Build Status](https://travis-ci.com/benbusby/namebuster.svg?branch=master)](https://travis-ci.com/benbusby/namebuster)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 Generates a list of possible common username permutations given a list of names, a url, or a file.
 
 ## Install
