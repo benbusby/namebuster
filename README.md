@@ -11,9 +11,16 @@ Generates a list of possible common username permutations given a list of names,
 
 ## Usage
 ### Command Line
-- Name list: `namebuster "John Broccoli, Adam Blueberry, Queen Mango"`
-- URL: `namebuster https://sauna.htb`
-- File: `namebuster document.txt`
+```bash
+bb@archbtw:~$ namebuster                                            
+                                                        
+Usage:                                                  
+namebuster <names|url|file>                             
+                                                        
+Example (names): namebuster "John Broccoli, Diana Mango"
+Example (url):   namebuster https://sauna.htb           
+Example (file):  namebuster document.txt
+```
 
 ### Python
 ```python
