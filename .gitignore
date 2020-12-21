@@ -134,3 +134,5 @@ dmypy.json
 # Packaging files
 MANIFEST.in
 build.sh
+
+.idea/

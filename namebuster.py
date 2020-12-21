@@ -8,7 +8,7 @@ import subprocess
 import sys
 
 version = '1.0.2'
-separator = '============================================================================\n'
+separator = '=' * 76 + '\n'
 help_options = ['help', '-h', '--h', '--help']
 usage = '''
 Usage:
@@ -18,8 +18,11 @@ Example (url):   namebuster https://sauna.htb
 Example (file):  namebuster document.txt
 '''
 warning = '''
-NOTE: Website and file parsing relies on proper capitalization to detect names accurately
+NOTE: Website and file parsing relies on proper capitalization
+to detect names accurately
 '''
+
+
 banner = '''
   _   _    _    __  __ _____ ____  _   _    ____      _____     _____ ____
  | \ | |  / \  |  \/  | ____| __ )| | | |  / ___|   _|_   _|   | ____|  _ \\
@@ -27,7 +30,7 @@ banner = '''
  | |\  |/ ___ \| |  | | |___| |_) | |_| |   ___) |_   _| |_____| |___|  _ <
  |_| \_/_/   \_\_|  |_|_____|____(_)___/___|____/  |_| |_|     |_____|_| \_\\
                                       |_____|
-'''
+'''  # noqa
 
 
 def signal_handler(sig, frame):
@@ -57,8 +60,10 @@ def generate(source, cli=False, name_sep=False):
     total_variations = []
 
     # Determine type of source to generate usernames from
-    names = []
-    urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', source)
+    urls = re.findall(
+        'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F]['
+        '0-9a-fA-F]))+', source)  # noqa
+
     if urls or os.path.exists(source):
         # User provided a url or file, will require nlp parser
         import utils.nlp_parser as nlp_parser
@@ -77,22 +82,36 @@ def generate(source, cli=False, name_sep=False):
 
         split_name = name.split(' ')
         if len(split_name) != 2:
-            print('Invalid name provided, must match "FirstName LastName" format')
+            print(
+                'Invalid name provided, '
+                'must match "FirstName LastName" format')
             continue
 
         first_name = split_name[0]
         last_name = split_name[1]
 
-        first_name_vars = [first_name.lower(), first_name.capitalize(), first_name.upper()]
-        last_name_vars = [last_name.lower(), last_name.capitalize(), last_name.upper()]
+        first_names = [first_name.lower(),
+                       first_name.capitalize(),
+                       first_name.upper()]
+        last_names = [last_name.lower(),
+                      last_name.capitalize(),
+                      last_name.upper()]
 
-        name_variations.extend(combine(first_name_vars[:] + [first_name[0].lower(), first_name[0].upper()], last_name_vars[:]))
-        name_variations.extend(combine(last_name_vars[:] + [last_name[0].lower(), last_name[0].upper()], first_name_vars[:]))
-        name_variations.extend(combine(first_name_vars[:], [last_name[0].lower(), last_name[0].upper()]))
-        name_variations.extend(combine(last_name_vars[:], [first_name[0].lower(), first_name[0].upper()]))
+        name_variations.extend(combine(
+            first_names[:] + [first_name[0].lower(), first_name[0].upper()],
+            last_names[:]))
+        name_variations.extend(combine(
+            last_names[:] + [last_name[0].lower(), last_name[0].upper()],
+            first_names[:]))
+        name_variations.extend(combine(
+            first_names[:],
+            [last_name[0].lower(), last_name[0].upper()]))
+        name_variations.extend(combine(
+            last_names[:],
+            [first_name[0].lower(), first_name[0].upper()]))
 
-        name_variations.extend(first_name_vars)
-        name_variations.extend(last_name_vars)
+        name_variations.extend(first_names)
+        name_variations.extend(last_names)
 
         results[name] = name_variations
         total_variations.extend(name_variations)
@@ -111,13 +130,15 @@ def generate(source, cli=False, name_sep=False):
 
 
 def cli_prompt(results, variations):
-    print(str(len(results)) + ' user(s), ' + str(len(variations)) + ' variations\n')
+    print(str(len(results)) + ' user(s), ' + str(
+        len(variations)) + ' variations\n')
 
     if len(results) == 0:
         print('No results found, exiting...')
         sys.exit(0)
 
-    print('Pick a user to view their username permutations, or write to a file:\n')
+    print('Pick a user to view their username permutations, '
+          'or write to a file:\n')
     prompt = ''
     i = 0
     for name in results.keys():

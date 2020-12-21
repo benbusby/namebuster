@@ -28,9 +28,10 @@ class TestNamebuster(unittest.TestCase):
         empty_results = generate('Name1, Name2')
         self.assertTrue(len(empty_results) == 0)
 
-
     def test_partial_results(self):
-        partial_results = generate('John Doe, Jane Doe, JosephDoe', name_sep=True)
+        partial_results = generate(
+            'John Doe, Jane Doe, JosephDoe',
+            name_sep=True)
         self.assertTrue(len(partial_results) == 2)
         self.assertTrue('JosephDoe' not in partial_results)
 

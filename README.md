@@ -2,6 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Build Status](https://travis-ci.com/benbusby/namebuster.svg?branch=master)](https://travis-ci.com/benbusby/namebuster)
+[![pep8](https://github.com/benbusby/namebuster/workflows/pep8/badge.svg)](https://github.com/benbusby/namebuster/actions?query=workflow%3Apep8)
 [![codebeat badge](https://codebeat.co/badges/a6de54a7-91f9-4498-8586-ecef3c0094b0)](https://codebeat.co/projects/github-com-benbusby-namebuster-master)
 
 Generates a list of possible common username permutations given a list of names, a url, or a file.
