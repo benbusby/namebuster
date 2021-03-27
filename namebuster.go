@@ -21,6 +21,44 @@ var usage = `
 
 `
 
+// Namebuster acts as the primary method for the CLI tool.
+// @input: Either a string of text, file, or URL to read from.
+// returns: Slice of string usernames
+func Namebuster(input string) []string {
+	var parsedNames []string
+	var result []string
+	var names []string
+
+	if utils.ValidUrl(input) {
+		// Find names on website
+		names = utils.FindNames(utils.FetchSiteContent(input))
+	} else if _, err := os.Stat(input); err == nil {
+		// Find names in file
+		buf, err := ioutil.ReadFile(input)
+		if err == nil {
+			names = utils.FindNames(string(buf))
+		} else {
+			panic(err)
+		}
+	} else {
+		// Find names in string
+		names = utils.FindNames(input)
+	}
+
+	for _, name := range names {
+		// Skip if the results already contain the full first and last name
+		fullName := strings.ReplaceAll(name, " ", "")
+		if contains(parsedNames, fullName) {
+			continue
+		}
+
+		parsedNames = append(parsedNames, fullName)
+		result = append(result, generateUsernames(name)...)
+	}
+
+	return result
+}
+
 func contains(items []string, target string) bool {
 	for _, item := range items {
 		if item == target {
@@ -51,49 +89,14 @@ func stringProduct(left []string, right []string) []string {
 	var result []string
 	for _, elementL := range left {
 		for _, elementR := range right {
-			result = append(result, elementL + elementR)
+			result = append(result, elementL+elementR)
 		}
 	}
 
 	return result
 }
 
-func Namebuster(input string) []string {
-	var parsedNames []string
-	var result []string
-	var names []string
-
-	if utils.ValidUrl(input) {
-		// Find names on website
-		names = utils.FindNames(utils.FetchSiteContent(input))
-	} else if _, err := os.Stat(input); err == nil {
-		// Find names in file
-		buf, err := ioutil.ReadFile(input)
-		if err == nil {
-			names = utils.FindNames(string(buf))
-		} else {
-			panic(err)
-		}
-	} else {
-		// Find names in string
-		names = utils.FindNames(input)
-	}
-
-	for _, name := range names {
-		// Skip if the results already contain the full first and last name
-		fullName := strings.ReplaceAll(name, " ", "")
-		if contains(parsedNames, fullName) {
-			continue
-		}
-
-		parsedNames = append(parsedNames, fullName)
-		result = append(result, GenerateUsernames(name)...)
-	}
-
-	return result
-}
-
-func GenerateUsernames(name string) []string {
+func generateUsernames(name string) []string {
 	var result []string
 
 	splitNames := strings.Split(name, " ")
@@ -105,14 +108,14 @@ func GenerateUsernames(name string) []string {
 	lastName := splitNames[1]
 
 	// Common first name variations
-	firstNames := []string {
+	firstNames := []string{
 		strings.ToLower(firstName),
 		strings.Title(strings.ToLower(firstName)),
 		strings.ToUpper(firstName),
 	}
 
 	// Common last name variations
-	lastNames := []string {
+	lastNames := []string{
 		strings.ToLower(lastName),
 		strings.Title(strings.ToLower(lastName)),
 		strings.ToUpper(lastName),

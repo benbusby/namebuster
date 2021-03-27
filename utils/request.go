@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-// isValidUrl tests a string to determine if it is a well-structured url or not.
+// ValidUrl tests a string to determine if it is a well-structured url or not.
 func ValidUrl(value string) bool {
 	_, err := url.ParseRequestURI(value)
 	if err != nil {
@@ -27,6 +27,10 @@ func ValidUrl(value string) bool {
 	return true
 }
 
+// FetchSiteContent retrieves the HTML content from a website using the
+// provided url
+// @url: The url to send the request to
+// return: The string HTML content
 func FetchSiteContent(url string) string {
 	resp, err := http.Get(url)
 	// handle the error if there is one

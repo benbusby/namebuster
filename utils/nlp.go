@@ -17,6 +17,9 @@ func isAlpha(text string) bool {
 	return true
 }
 
+// FindNames looks for proper nouns within a body of text
+// @body: A section of text from a string, file, or web content
+// return: An array of potential names
 func FindNames(body string) []string {
 	// Create a new document with the default configuration:
 	doc, err := prose.NewDocument(body)
@@ -24,8 +27,8 @@ func FindNames(body string) []string {
 		log.Fatal(err)
 	}
 
+	var name []string
 	var names []string
-	var name  []string
 
 	for _, tok := range doc.Tokens() {
 		if !isAlpha(tok.Text) {
@@ -39,7 +42,7 @@ func FindNames(body string) []string {
 		}
 
 		if len(name) == 2 {
-			names = append(names, name[0] + " " + name[1])
+			names = append(names, name[0]+" "+name[1])
 			name = name[:0]
 		}
 	}
