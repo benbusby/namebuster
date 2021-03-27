@@ -1,6 +1,8 @@
 # Namebuster
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Tests](https://github.com/benbusby/namebuster/actions/workflows/tests.yml/badge.svg)](https://github.com/benbusby/namebuster/actions/workflows/tests.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/benbusby/namebuster)](https://goreportcard.com/report/github.com/benbusby/namebuster)
 
 Generates a list of possible common username permutations given a list of names, a url, or a file.
 
