@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"namebuster/utils"
+	"github.com/benbusby/namebuster/utils"
 	"os"
 	"strings"
 )
