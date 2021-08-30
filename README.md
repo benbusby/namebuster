@@ -7,7 +7,7 @@
 Generates a list of possible common username permutations given a list of names, a url, or a file.
 
 ## Install
-Go: TBD
+Go: `go install github.com/benbusby/namebuster@latest`
 
 Python ([branch](https://github.com/benbusby/namebuster/tree/python)): `pip install namebuster`
 
