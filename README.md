@@ -9,7 +9,7 @@ Generates a list of possible common username permutations given a list of names,
 ## Install
 Go: `go install github.com/benbusby/namebuster@latest`
 
-Python ([branch](https://github.com/benbusby/namebuster/tree/python)): `pip install namebuster`
+Python ([PyPI](https://pypi.org/project/namebuster/) -- no longer maintained): `pip install namebuster`
 
 ## Usage
 ### Command Line
@@ -22,17 +22,6 @@ namebuster <names|url|file>
 Example (names): namebuster "John Broccoli, Diana Mango"
 Example (url):   namebuster https://sauna.htb           
 Example (file):  namebuster document.txt
-```
-
-### Python
-```python
-import namebuster
-
-# Create a list of all usernames as one large list
-split_usernames = namebuster.generate("https://sauna.htb")
-
-# With name_sep=True, create a dict with "real_name: [usernames]" mapping
-split_usernames = namebuster.generate("John Broccoli, Tim Apple", name_sep=True)
 ```
 
 For each discovered name, namebuster will generate ~200 possible usernames. You can then use this list with a tool like [kerbrute](https://github.com/ropnop/kerbrute), for example:
