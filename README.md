@@ -24,13 +24,13 @@ Example (url):   namebuster https://sauna.htb
 Example (file):  namebuster document.txt
 ```
 
-For each discovered name, namebuster will generate ~200 possible usernames. You can then use this list with a tool like [kerbrute](https://github.com/ropnop/kerbrute), for example:
+For each discovered name, namebuster will generate ~200 possible usernames. You can then use this list with a tool like [kerbrute](https://github.com/ropnop/kerbrute), for example (originally used for the [Sauna](https://app.hackthebox.com/machines/Sauna) machine on [HackTheBox](https://hackthebox.com)):
 
 ```bash
 [ benbusby : ~/test ]
-$ namebuster "Fergus Smith" > usernames.txt
+$ namebuster https://sauna.htb > usernames.txt
 [ benbusby : ~/test ]
-$ ./kerbrute_linux_amd64 userenum ./usernames.txt -d DOMAIN.LOCAL --dc domain.com
+$ ./kerbrute_linux_amd64 userenum ./usernames.txt -d DOMAIN.LOCAL --dc sauna.htb
 
     __             __               __
    / /_____  _____/ /_  _______  __/ /____
